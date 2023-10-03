@@ -28,9 +28,17 @@ def main():
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_rct = kk_img.get_rect()
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk1_img = kk_img
+    kk2_img =pg.transform.flip(kk_img,True,False)
+    kk3_img= pg.transform.flip(kk1_img,True,False)
+    kk4_img=pg.transform.rotozoom(kk3_img, -90, 1.0)
+    kk3_img=pg.transform.rotozoom(kk3_img, 90, 1.0)
+    kk5_img=pg.transform.rotozoom(kk_img, 45, 1.0)
     kk_rct.center = (900,400)
+    
     clock = pg.time.Clock()
-    bd_img = pg.Surface((20, 20))
+    """ばくだん"""
+    bd_img = pg.Surface((20,20))
     bd_img.set_colorkey((0, 0, 0))
     pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)
     bd_rct = bd_img.get_rect()
@@ -43,7 +51,6 @@ def main():
             if event.type == pg.QUIT: 
                 return
 
-
         screen.blit(bg_img, [0, 0])
         if kk_rct.colliderect(bd_rct):
             print("ゲームオーバー")
@@ -53,23 +60,34 @@ def main():
         """こうかとん"""
         key_list = pg.key.get_pressed()
         sum_mv =[0,0]
+
         for key,mv in delta.items():
+            if key_list[pg.K_RIGHT]:
+                kk_img =kk2_img
+            if key_list[pg.K_LEFT]:
+                kk_img=kk1_img
+            if key_list[pg.K_UP]:
+                kk_img=kk3_img
+            if key_list[pg.K_DOWN]:
+                kk_img=kk4_img
             if key_list[key]:
                 sum_mv[0] +=mv[0]
                 sum_mv[1] +=mv[1]
+
+            
         kk_rct.move_ip(sum_mv[0],sum_mv[1])
         if check_bound(kk_rct) != (True,True):
             kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
         screen.blit(kk_img,kk_rct)
         """爆弾"""
+        bd_rct.size=(20,20)
         bd_rct.move_ip(vx,vy)
         yoko,tate= check_bound(bd_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
-        screen.blit(bd_img,bd_rct)
-        
+        screen.blit(bd_img,bd_rct)  
         pg.display.update()
         tmr += 1
         clock.tick(50)
