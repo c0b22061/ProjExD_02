@@ -29,7 +29,7 @@ def main():
     kk_rct = kk_img.get_rect()
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk1_img = kk_img
-    kk2_img =pg.transform.flip(kk_img,True,False)
+    kk2_img =pg.transform.flip(kk_img,True,False)#こうかとん反転
     kk3_img= pg.transform.flip(kk1_img,True,False)
     kk4_img=pg.transform.rotozoom(kk3_img, -90, 1.0)
     kk3_img=pg.transform.rotozoom(kk3_img, 90, 1.0)
